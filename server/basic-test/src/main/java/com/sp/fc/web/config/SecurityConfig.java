@@ -1,6 +1,7 @@
 package com.sp.fc.web.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,8 +11,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
-@EnableWebSecurity(debug = true)
+@Order(1) //필터를 두개이상 만드는경우 Order 어노테이션을 써서 순서를 정해줘야한다. 
+@EnableWebSecurity(debug = true) //리퀘스트가 올 때마다 이 리퀘스트는 어떤 필터 체인을 타고 있는지 확인할 수 있음
 @EnableGlobalMethodSecurity(prePostEnabled = true) //권한을 체크하는 @preAuthorize가 작동
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     
@@ -38,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     //스프링 시큐리티는 기본적으로 모든 페이지를 막고 시작함
     //만약 특정 페이지의 권한을 풀어주고 싶다면 
+    //필터들을 추가해주면 된다.
     @Override
     protected void configure(HttpSecurity http)throws Exception{
         http.authorizeRequests((requests) ->
