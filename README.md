@@ -108,3 +108,32 @@ UsernamePasswordAuthenticationToken이 ProviderManager에 도착한다면  Provi
 5. boolean authenticated : 인증되었는가? 를 확인해줌
 
 
+## Form login
+
+[DefaultLoginPageGeneratingFilter]
+- GET /login 을 처리한다.
+- 별도의 로그인 페이지 설정을 하지 않으면 제공되는 필터
+- 기본 로그인 폼을 제공한다.
+- OAuth2 / OpenID / Saml2 로그인과도 같이 사용할 수 있다.
+
+[UsernamePasswordAuthenticationFilter]
+- POST /login을 처리한다. processingUrl을 변경하면 주소를 바꿀 수 있다.
+- form 인증을 처리해주는 필터로 스프링 시큐리티에서 가장 일반적으로 쓰인다.
+- 주요 설정 정보
+ 1. filterProcessingUrl : 로그인을 처리해 줄 URL (POST)
+ 2. username parameter : POST에 username에 대한 값을 넘겨줄 인자의 이름
+ 3. password parameter : POST에 password에 대한 값을 넘겨줄 인자의 이름
+ 4. 로그인 성공시 처리방법 : defaultSuccessUrl(alwaysUse 옵션 설정이 중요), successHandler
+ 5. 로그인 실패시 처리방법 : failureUrl, failureHandler
+ 6. authenticationDetailSource : Authentication 객체의 details에 들어갈 정보를 직접 만들어 줌
+
+[DefaultLogoutPageGeneratingFilter]
+- GET /logout을 처리한다.
+- POST /logout을 요청할 수 있는 UI를 제공한다.
+- csrf 토큰이 처리된다.
+
+[LogoutFilter]
+- POST /logout을 처리한다. processingUrl을 변경하면 바꿀 수 있다.
+- 로그 아웃 처리 -> session, SecurityContext, csrf, 쿠키, remember-me 쿠키 등을 삭제한다.
+-
+
