@@ -55,5 +55,56 @@
 
 
 
+## Authentication의 기본 구조
+
+- 스프링 프레임워크에서 로그인을 한다는 것은 authenticated가 true인 Authentication 객체를 SecurityContext에 갖고 있는 상태를 말한다.
+단, Authentication이 AnonymouseAuthenticationToken만 아니면 된다.
+
+AuthenticationManager, ProviderManager, AuthenticationProvider
+
+-AuthenticationManager (interface)
+
+ : Authentication 객체를 받아 인증하고 인증되었다면 인증된 Authentication 객체를 돌려주는 메서드를 구현하도록 하는 인터페이스다.
+
+이 메서드를 통해 인증되면 isAuthenticated(boolean)값을 TRUE로 바꿔준다.
+
+ 
+-ProvicderManager (class)
+
+: AuthenticationManager의 구현체로 스프링에서 인증을 담당하는 클래스로 볼 수 있다.
+
+(스프링 시큐리티가 생성하고 등록하고 관리하는 스프링 빈이므로  직접 구현할 필요X)
+
+
+-AuthenticationProvider
+
+:  인증과정이 이 메서드를 통해서 진행된다.
+
+
+supports(Class<?>):boolean :  앞에서 보내준 Authentication 객체를 이 AuthenticationProvider가 인증 가능한 클래스인지 확인한다.
+
+
+UsernamePasswordAuthenticationToken이 ProviderManager에 도착한다면  ProviderManager는 자기가 갖고 있는 AuthenticationProvider 목록을 순회하면서 '너가 이거 해결해줄 수 있어?' 하고 물어보고(supports()) 해결 가능하다고 TRUE를 리턴해주는 AuthenticationProvider에게 authenticate() 메서드를 실행한다.
+
+
+[ 인증토큰을 제공하는 필터들 ]
+- UsernamePasswordAuthenticationFilter : 폼 로그인
+- RememberMeAuthenticationFilter : remember-me 쿠키 로그인
+- AnonymouseAuthentivationFilter : 로그인하지 않았다는 것을 인증함
+- SecurityContextPersistenceFilter : 기존 로그인을 유지함 -> 기본적으로 session을 이용함
+- BearerTokenAuthenticationFilter : JWT 로그인
+- BasicAuthenticationFilter : ajax로그인
+- OAuth2LoginAuthenticationFilter : 소셜 로그인
+- OpenIDAuthenticationFilter : OpenID 로그인
+등등..
+
+- Authentication을 제공하는 인증 제공자는 여러개가 동시에 존재할 수 있고 인증 방식에 따라 ProviderManager도 복수로 존재할 수 있다.
+- Authentication은 인터페이스로 아래와 같은 정보들을 갖고 있다.
+
+1. Set<GrantedAuthority> authorities : 인증된 권한 정보
+2. principal : 인증 대상에 관한 정보. 주로 UserDetails 객체
+3. credentials : 인증 확인을 위한 정보, 주로 비밀번호가 오지만 인증후에는 보안을 위해 삭제한다.
+4. details : 그 밖에 필요한 정보. IP, 세션정보, 기타 인증 요청에서 사용했던 정보들
+5. boolean authenticated : 인증되었는가? 를 확인해줌
 
 
