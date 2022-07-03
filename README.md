@@ -135,5 +135,18 @@ UsernamePasswordAuthenticationToken이 ProviderManager에 도착한다면  Provi
 [LogoutFilter]
 - POST /logout을 처리한다. processingUrl을 변경하면 바꿀 수 있다.
 - 로그 아웃 처리 -> session, SecurityContext, csrf, 쿠키, remember-me 쿠키 등을 삭제한다.
--
+
+
+## Authentication 매커니즘
+
+[인증]
+Authorities안에 어떤 권한을 갖고있는지 정보를 담음
+Authentication은 인증된 결과만 저장하는것이 아니고, 인증을 하기 위한 정보와 인증을 받기 이한 정보가 동시에 들어있다.
+
+- Credentials : 인증을 받기 위해 필요한 정보, 비번 등 (Input등)
+- Principal : 인증된 결과. 인증 대상 (Output)
+- Details : 기타 정보, 인증에 관여된 주변 정보들
+- Authorities : 권한 정보들
+
+Authentication을 구현한 객체들은 일반적으로 Token이라는 이름의 객체로 구현함
 
