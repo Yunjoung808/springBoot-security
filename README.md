@@ -139,7 +139,7 @@ UsernamePasswordAuthenticationToken이 ProviderManager에 도착한다면  Provi
 
 ## Authentication 매커니즘
 
-[인증]
+[ 인증 ]
 Authorities안에 어떤 권한을 갖고있는지 정보를 담음
 Authentication은 인증된 결과만 저장하는것이 아니고, 인증을 하기 위한 정보와 인증을 받기 이한 정보가 동시에 들어있다.
 
@@ -149,4 +149,12 @@ Authentication은 인증된 결과만 저장하는것이 아니고, 인증을 �
 - Authorities : 권한 정보들
 
 Authentication을 구현한 객체들은 일반적으로 Token이라는 이름의 객체로 구현함
+
+[ 인증 제공자 AuthenticationProvider ]
+Autentication을 제공해줌
+AuthenticationProvider는 기본적으로 Authentication을 받아서 인증을 하고 인증된 결과를 다시 Authentication 객체로 전달한다.
+인증 대상과 방식이 다양할 수 있기 때문에 인증 제공자도 여러개 올 수 있다.
+
+
+
 
